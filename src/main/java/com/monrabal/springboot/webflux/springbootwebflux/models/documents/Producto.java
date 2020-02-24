@@ -2,7 +2,10 @@ package com.monrabal.springboot.webflux.springbootwebflux.models.documents;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Document(collection = "productos")
@@ -15,19 +18,23 @@ public class Producto {
         this.precio = precio;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                '}';
+    public Producto(String nombre, Double precio, Category category) {
+        this(nombre, precio);
+        this.category = category;
     }
+
+    private Category category;
 
     @Id
     private String id;
 
+    @NotEmpty
     private String nombre;
+
+    @NotNull
     private Double precio;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
     public String getId() {
@@ -60,5 +67,21 @@ public class Producto {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                '}';
     }
 }
